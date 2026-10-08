@@ -1,0 +1,41 @@
+services:
+  api:
+    build:
+      context: .
+      target: production
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://mongo:27017/starwars
+      MONGODB_CONNECT_TIMEOUT_MS: ${MONGODB_CONNECT_TIMEOUT_MS:-5000}
+      DB_FALLBACK_ENABLED: ${DB_FALLBACK_ENABLED:-true}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      SWAPI_BASE_URL: ${SWAPI_BASE_URL:-https://www.swapi.tech/api}
+      SWAPI_RETRY_ATTEMPTS: ${SWAPI_RETRY_ATTEMPTS:-3}
+      SWAPI_RETRY_DELAY_MS: ${SWAPI_RETRY_DELAY_MS:-500}
+      SYNC_CRON: ${SYNC_CRON:-0 3 * * *}
+      SYNC_CRON_ENABLED: ${SYNC_CRON_ENABLED:-true}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:8-noble
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

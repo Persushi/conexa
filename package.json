@@ -1,0 +1,89 @@
+{
+  "name": "starwars-api",
+  "version": "1.0.0",
+  "description": "Movie management backend built on top of the SWAPI films catalogue",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "test:e2e": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --config ./test/jest-e2e.json",
+    "seed": "nest start --entryFile seed",
+    "seed:prod": "node dist/seed",
+    "snapshot:update": "node scripts/update-films-snapshot.mjs",
+    "check": "eslint \"{src,test}/**/*.ts\" && tsc --noEmit -p tsconfig.json && jest && npm run test:e2e",
+    "preversion": "node scripts/changelog.cjs --check && npm run check",
+    "version": "node scripts/changelog.cjs && git add CHANGELOG.md",
+    "release:patch": "npm version patch -m \"chore(release): v%s\"",
+    "release:minor": "npm version minor -m \"chore(release): v%s\"",
+    "release:major": "npm version major -m \"chore(release): v%s\""
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.ts",
+      "!main.ts",
+      "!**/*.module.ts",
+      "!**/*.schema.ts",
+      "!**/*.dto.ts"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/mongoose": "^11.0.4",
+    "@nestjs/platform-express": "^11.1.0",
+    "@nestjs/schedule": "^6.0.0",
+    "@nestjs/swagger": "^11.2.6",
+    "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "cron": "^4.4.0",
+    "mongoose": "^9.11.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.1.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^26.6.4",
+    "@types/supertest": "^7.2.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.13.0",
+    "jest": "^30.5.2",
+    "mongodb-memory-server": "^11.3.0",
+    "prettier": "^3.9.9",
+    "supertest": "^7.3.1",
+    "ts-jest": "^29.4.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1"
+  }
+}
